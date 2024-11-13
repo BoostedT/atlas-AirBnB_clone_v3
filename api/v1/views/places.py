@@ -4,6 +4,7 @@
 from flask import Blueprint, jsonify, request, abort
 from models import storage
 from models.place import Place
+from models.city import City
 from datetime import datetime
 
 app_views = Blueprint('app_views', __name__, url_prefix='/api/v1')
