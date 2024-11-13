@@ -8,16 +8,27 @@ from models.state import State
 from models.city import City
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'])
-@app_views.route(
-        '/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
-def get_cities(state_id):
-    """Retrieves the list of all City objects of a State"""
-    state = storage.get(State, state_id)
-    if not state:
+@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'],
+                 strict_slashes=False)
+def handle_cities(state_id):
+    """Retrieves the list of all City objects or create a new City object"""
+    state_obj = storage.get("State", state_id)
+    if state_obj:
+        if request.method == 'GET':
+            return jsonify([city_obj.to_dict() for city_obj in state_obj.
+                            cities]), 200
+        if request.method == 'POST':
+            if not request.get_json(silent=True):
+                abort(400, "Not a JSON")
+            if not request.get_json(silent=True).get('name'):
+                abort(400, "Missing name")
+            kwargs = request.get_json(silent=True)
+            new_city = City(**kwargs)
+            setattr(new_city, 'state_id', state_id)
+            new_city.save()
+            return jsonify(new_city.to_dict()), 201
+    else:
         abort(404)
-    cities = [city.to_dict() for city in state.cities]
-    return jsonify(cities)
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
@@ -40,27 +51,6 @@ def delete_city(city_id):
         return jsonify({})
     else:
         abort(404)
-
-
-@app_views.route('/states/<state_id>/cities', methods=['POST'])
-@app_views.route(
-        '/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
-def create_city(state_id):
-    """Creates a city object"""
-    state = storage.get(State, state_id)
-    if not state:
-        abort(404)
-    if not request.is_json:
-        abort(400, description="Not a JSON")
-    data = request.get_json(silent=True)
-    if not data:
-        abort(400, description="Not a JSON")
-    if 'name' not in data:
-        abort(400, description="Missing name")
-    data['state_id'] = state_id
-    city = City(**data)
-    city.save()
-    return jsonify(city.to_dict()), 201
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
