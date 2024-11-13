@@ -12,7 +12,7 @@ from models.city import City
 def list_cities(state_id):
     """Retrieves the list of all City objects of a State"""
     state = storage.get(State, state_id)
-    if state is None:
+    if state_id is None:
         abort(404)
     cities = [city.to_dict() for city in state.cities]
     return jsonify(cities)
