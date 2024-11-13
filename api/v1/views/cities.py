@@ -26,17 +26,17 @@ def list_cities_of_state(state_id):
 @app_views.route('/states/<state_id>/cities/', methods=['POST'])
 def post_city(state_id):
     '''Creates a City object'''
-    all_states = storage.all("State").values()
-    state_obj = [obj.to_dict() for obj in all_states if obj.id == state_id]
-    if state_obj == []:
+    state = storage.get("State", state_id)
+    if state is None:
         abort(404)
-    if not request.get_json():
+    if not request.is_json:
         abort(400, 'Not a JSON')
-    if 'name' not in request.json:
+    data = request.get_json()
+    if 'name' not in data:
         abort(400, 'Missing name')
-    request.json['state_id'] = state_id
-    new_city = City(**request.json)
-    new_city.save()
+    new_city = City(**data)
+    storage.new(new_city)
+    storage.save()
     return jsonify(new_city.to_dict()), 201
 
 
