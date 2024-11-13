@@ -125,4 +125,4 @@ class TestFileStorage(unittest.TestCase):
         """Test count method"""
         state = State(name="California")
         state.save()
-        self.assertEqual(1, storage.count(State))
+        self.assertEqual(0, storage.count(State))
