@@ -12,7 +12,7 @@ from models.user import User
                  strict_slashes=False)
 def get_place_reviews(place_id):
     """Retrieves the list of all Review objects of a Place"""
-    place = storage.get(Place, place_id)
+    place = storage.get(Place, 'place_id')
     if place is None:
         abort(404)
     reviews = [review.to_dict() for review in place.reviews]
