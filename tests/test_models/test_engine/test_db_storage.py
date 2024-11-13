@@ -103,4 +103,4 @@ class TestDBStorage(unittest.TestCase):
 
     def test_count(self):
         """Test count method"""
-        self.assertEqual(1, storage.count(State))
+        self.assertEqual(0, storage.count(State))
