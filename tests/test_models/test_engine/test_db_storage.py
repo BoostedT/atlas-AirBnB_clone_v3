@@ -88,7 +88,8 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """Test that save properly saves objects to file.json"""
 
-class TestDBStorage(unittest.TestCase)
+
+class TestDBStorage(unittest.TestCase):
     def setup(self):
         storage.reload()
     for obj in list(storage.all().values()):
