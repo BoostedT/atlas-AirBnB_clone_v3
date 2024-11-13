@@ -8,6 +8,17 @@ from models.place import Place
 from models.user import User
 
 
+
+@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+def list_cities(state_id):
+    """Retrieves the list of all City objects of a State"""
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
+    cities = [city.to_dict() for city in state.cities]
+    return jsonify(cities)
+
+
 @app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
 def list_city_places(city_id):
     """Retrieves the list of all Place objects of a City"""
@@ -58,6 +69,23 @@ def post_place(city_id):
     place = Place(**data)
     place.save()
     return jsonify(place.to_dict()), 201
+
+
+@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+def post_city(state_id):
+    """Creates a City"""
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
+    data = request.get_json(silent=True)
+    if data is None:
+        return 'Not a JSON', 400
+    if 'name' not in data:
+        return 'Missing name', 400
+    data['state_id'] = state_id
+    city = City(**data)
+    city.save()
+    return jsonify(city.to_dict()), 201
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
