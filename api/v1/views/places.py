@@ -11,8 +11,8 @@ app_views = Blueprint('app_views', __name__, url_prefix='/api/v1')
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
-def list_places(city_id):
-    """Retrieves the list of all Place objects of a City"""
+def list_places_of_city(city_id):
+    '''Retrieves a list of all Place objects in city'''
     all_cities = storage.all("City").values()
     city_obj = [obj.to_dict() for obj in all_cities if obj.id == city_id]
     if city_obj == []:
@@ -22,13 +22,14 @@ def list_places(city_id):
     return jsonify(list_places)
 
 
-@app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['GET'])
 def get_place(place_id):
-    """Retrieves a Place object"""
-    place = storage.get(Place, place_id)
-    if place is None:
+    '''Retrieves a Place object'''
+    all_places = storage.all("Place").values()
+    place_obj = [obj.to_dict() for obj in all_places if obj.id == place_id]
+    if place_obj == []:
         abort(404)
-    return jsonify(place.to_dict())
+    return jsonify(place_obj[0])
 
 
 @app_views.route('/places/<place_id>', methods=['DELETE'], strict_slashes=False)
