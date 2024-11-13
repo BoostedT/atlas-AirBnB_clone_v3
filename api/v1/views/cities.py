@@ -15,7 +15,7 @@ def list_cities(state_id):
     if state_id is None:
         abort(404)
         cities = [city.to_dict() for city in state.cities] if state.cities else []
-        return jsonify(cities)
+        return jsonify(cities), 200
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
