@@ -19,7 +19,7 @@ def get_cities(state_id):
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False)
-def get_city(city_id)
+def get_city(city_id):
     """Retrieves a City object"""
     city = storage.get(City, city_id)
     if city:
