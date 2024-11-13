@@ -11,12 +11,10 @@ from models.city import City
 @app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 def list_cities(state_id):
     """Retrieves the list of all City objects of a State"""
-    all_states = storage.all("State").values()
-    state_obj = [obj.to_dict() for obj in all_states if obj.id == state_id]
-    if state_obj == []:
+    state = storage.get("State", state_id)
+    if state is None:
         abort(404)
-    list_cities = [obj.to_dict() for obj in storage.all("City").values()
-                   if state_id == obj.state_id]
+    list_cities = [city.to_dict() for city in state.cities]
     return jsonify(list_cities)
 
 
