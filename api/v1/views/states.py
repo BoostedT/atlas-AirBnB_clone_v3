@@ -54,8 +54,10 @@ def post_state():
 def update_state(state_id):
     """ Updates a State object """
     state = storage.get(State, state_id)
+    if not request.is_json:
+        abort(400, description="Not a JSON")
     if state is None:
-        abort(404)
+        abort(400, description="Not a JSON")
     if not request.get_json():
         abort(400, description="Not a JSON")
     for key, value in request.get_json().items():
