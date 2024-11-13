@@ -11,6 +11,7 @@ import uuid
 
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 def list_cities(state_id):
     """Return all cities in a state"""
     state = storage.get('State', state_id)
@@ -20,6 +21,7 @@ def list_cities(state_id):
     return jsonify(cities)
 
 
+@app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 def get_city(city_id):
     """Return a city"""
