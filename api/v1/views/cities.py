@@ -39,7 +39,7 @@ def create_city(state_id):
     storage.new(new_city)
     storage.save()
     cities.append(new_city.to_dict())
-    return jsonify(cities[0]), 200
+    return jsonify(cities[0]), 201
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'])
