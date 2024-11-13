@@ -13,11 +13,14 @@ app_views = Blueprint('app_views', __name__, url_prefix='/api/v1')
 @app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
 def list_places(city_id):
     """Retrieves the list of all Place objects of a City"""
-    city = storage.get(City, city_id)
-    if city is None:
+    all_cities = storage.all("City").values()
+    city_obj = [obj.to_dict() for obj in all_cities if obj.id == city_id]
+    if city_obj == []:
         abort(404)
-    places = [Place.to_dict(place) for place in city.places]
-    return jsonify(places)
+    list_places = [obj.to_dict() for obj in storage.all("Place").values()
+                   if city_id == obj.city_id]
+    return jsonify(list_places)
+
 
 @app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
 def get_place(place_id):
