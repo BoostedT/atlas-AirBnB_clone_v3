@@ -27,13 +27,17 @@ def get_amenity(amenity_id):
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 def create_amenity():
     """Create an amenity"""
-    if not request.json:
+    if not request.is_json:
         abort(400, 'Not a JSON')
-    if 'name' not in request.json:
+    data = request.get_json()
+    if 'name' not in data:
         abort(400, 'Missing name')
-    amenity = Amenity(**request.json)
-    amenity.save()
-    return jsonify(amenity.to_dict()), 201
+    if 'name' not in data:
+        abort(400, 'Missing name')
+    new_amenity = Amenity(name=data['name'])
+    storage.new(new_amenity)
+    storage.save()
+    return jsonify(new_amenity.to_dict()), 201
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'], strict_slashes=False)
