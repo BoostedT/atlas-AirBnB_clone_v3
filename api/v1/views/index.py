@@ -18,5 +18,8 @@ def get_stats():
         "users": storage.count("User"),
         "states": storage.count("State"),
         "cities": storage.count("City"),
+        "amenities": storage.count("Amenity"),
+        "places": storage.count("Place"),
+        "reviews": storage.count("Review")
     }
     return jsonify(stats)
