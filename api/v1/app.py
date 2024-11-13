@@ -18,5 +18,11 @@ def teardown(exception):
     storage.close()
 
 
+@app.errorhandler(404)
+def not_found(error):
+    """Handles 404 errors"""
+    return jsonify({"error": "Not found"}), 404
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, threaded=True)
