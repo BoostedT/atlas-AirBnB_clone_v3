@@ -9,7 +9,7 @@ from models.city import City
 
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
-def list_cities(state_id):
+def cities_in_state(state_id):
     """Retrieves the list of all City objects of a State"""
     state = storage.get(State, state_id)
     if not state:
