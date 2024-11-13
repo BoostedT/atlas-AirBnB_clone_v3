@@ -54,7 +54,7 @@ def post_place(city_id):
         abort(404)
     if not request.is_json:
         abort(400, 'Not a JSON')
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     if 'user_id' not in data:
         abort(400, 'Missing user_id')
     user = storage.get(User, data['user_id'])
@@ -77,7 +77,7 @@ def put_place(place_id):
         abort(404)
     if not request.is_json:
         abort(400, 'Not a JSON')
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     for key, value in data.items():
         if key not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
             setattr(place, key, value)

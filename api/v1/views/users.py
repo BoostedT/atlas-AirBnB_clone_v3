@@ -43,7 +43,7 @@ def create_user():
     """Creates a User"""
     if not request.is_json:
         abort(400, 'Not a JSON')
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     if 'email' not in data:
         abort(400, 'Missing email')
     if 'password' not in data:
@@ -62,7 +62,7 @@ def update_user(user_id):
         abort(404)
     if not request.is_json:
         abort(400, 'Not a JSON')
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     if data is None:
         abort(400, 'Not a JSON')
     ignored_fields = ['id', 'email', 'created_at', 'updated_at']

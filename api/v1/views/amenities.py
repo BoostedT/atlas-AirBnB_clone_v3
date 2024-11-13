@@ -30,7 +30,7 @@ def create_amenity():
     """Create an amenity"""
     if not request.is_json:
         abort(400, 'Not a JSON')
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     if data is None:
         abort(400, 'Not a JSON')
     if 'name' not in data:
@@ -50,7 +50,7 @@ def update_amenity(amenity_id):
         abort(404)
     if not request.is_json:
         abort(400, 'Not a JSON')
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     if data is None:
         abort(400, 'Not a JSON')
     for key, value in data.items():

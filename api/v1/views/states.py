@@ -42,7 +42,7 @@ def post_state():
     """ Creates a State """
     if not request.is_json:
         abort(400, description="Not a JSON")
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     if data is None:
         abort(400, description="Not a JSON")
     if 'name' not in data:
@@ -60,7 +60,7 @@ def update_state(state_id):
         abort(404)
     if not request.is_json:
         abort(400, description="Not a JSON")
-    data = request.get_json()
+    data = request.get_json(silent=True)()
     if data is None:
         abort(400, description="Not a JSON")
     for key, value in data.items():
