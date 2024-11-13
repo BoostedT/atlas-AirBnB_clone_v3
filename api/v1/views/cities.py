@@ -26,10 +26,7 @@ def list_cities_of_state(state_id):
 @app_views.route('/states/<state_id>/cities/', methods=['POST'])
 def create_city(state_id):
     '''Creates a City'''
-    if not request.is_json():
-        abort(400, 'Not a JSON')
-    data = request.get_json()
-    if data is None:
+    if not request.get_json():
         abort(400, 'Not a JSON')
     if 'name' not in request.get_json():
         abort(400, 'Missing name')
